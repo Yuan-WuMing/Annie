@@ -1,6 +1,7 @@
 package com.usian.controller;
 
 import com.usian.feign.ItemServiceFeign;
+import com.usian.pojo.TbItem;
 import com.usian.pojo.TbItemCat;
 import com.usian.utils.PageResult;
 import com.usian.utils.Result;
@@ -34,5 +35,14 @@ public class ItemController {
             return Result.ok(list);
         }
         return Result.error("查询无结果");
+    }
+
+    @RequestMapping("/item/insertTbItem")
+    public Result insertTbItem(TbItem tbItem,String desc,String itemParams){
+        Integer insertTbItemNum = itemServiceFeign.insertTbItem(tbItem,desc,itemParams);
+        if (insertTbItemNum==3){
+            return Result.ok();
+        }
+        return Result.error("添加失败");
     }
 }

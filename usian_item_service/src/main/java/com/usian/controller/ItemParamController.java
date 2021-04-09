@@ -17,6 +17,7 @@ public class ItemParamController {
     @RequestMapping("/itemParam/selectItemParamByItemCatId")
     public TbItemParam selectItemParamByItemCatId(Long itemCatId){
         return itemParamService.selectItemParamByItemCatId(itemCatId);
+
     }
 
 
