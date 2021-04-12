@@ -1,8 +1,11 @@
 package com.usian.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.usian.mapper.TbItemParamMapper;
 import com.usian.pojo.TbItemParam;
 import com.usian.pojo.TbItemParamExample;
+import com.usian.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +29,18 @@ public class ItemParamService {
             return list.get(0);
         }
         return null;
+    }
+
+    public PageResult selectItemParamAll(Integer page, Integer rows) {
+        PageHelper.startPage(page,rows);
+
+        List<TbItemParam> list = mapper.selectByExampleWithBLOBs(null);
+
+        PageInfo<TbItemParam> pageInfo = new PageInfo<>(list);
+        PageResult pageResult = new PageResult();
+        pageResult.setResult(pageInfo.getList());
+        pageResult.setTotalPage(Long.valueOf(pageInfo.getPages()));
+        pageResult.setTotalPage(pageInfo.getTotal());
+        return pageResult;
     }
 }

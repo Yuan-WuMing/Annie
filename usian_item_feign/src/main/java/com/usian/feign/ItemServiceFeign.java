@@ -31,4 +31,13 @@ public interface ItemServiceFeign {
 
     @RequestMapping("service/item/preUpdateItem")
     Map<String, Object> preUpdateItem(@RequestParam("itemId") Long itemId);
+
+    @RequestMapping("service/item/updateTbItem")
+    Integer updateTbItem(@RequestBody TbItem tbItem,@RequestParam String desc,@RequestParam String itemParams);
+
+    @RequestMapping("service/item/deleteItemById")
+    Integer deleteItemById(@RequestParam Long itemId);
+
+    @RequestMapping("service/itemParam/selectItemParamAll")
+    PageResult selectItemParamAll(@RequestParam Integer page,@RequestParam Integer rows);
 }
