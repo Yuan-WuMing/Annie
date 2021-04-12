@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @FeignClient("usian-item-service")
 public interface ItemServiceFeign {
@@ -27,4 +28,7 @@ public interface ItemServiceFeign {
 
     @RequestMapping("service/item/insertTbItem")
     Integer insertTbItem(@RequestBody TbItem tbItem, @RequestParam String desc, @RequestParam String itemParams);
+
+    @RequestMapping("service/item/preUpdateItem")
+    Map<String, Object> preUpdateItem(@RequestParam("itemId") Long itemId);
 }

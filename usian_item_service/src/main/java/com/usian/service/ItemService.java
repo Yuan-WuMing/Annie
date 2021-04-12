@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ItemService {
@@ -89,5 +91,27 @@ public class ItemService {
         tbItemParamItem.setCreated(date);
         Integer itemParemItemNum = itemParamItemMapper.insertSelective(tbItemParamItem);
         return itemParemItemNum+tbitemDescNum+tbItemNum;
+    }
+
+    public Map<String, Object> preUpdateItem(Long itemId) {
+        Map<String, Object> map = new HashMap<>();
+        //根据商品ID查询商品
+        TbItem tbItem = tbItemMapper.selectByPrimaryKey(itemId);
+        map.put("item",tbItem);
+        //根据商品ID查询描述
+        TbItemDesc tbItemDesc = itemDescMapper.selectByPrimaryKey(itemId);
+        map.put("itemDesc",tbItemDesc);
+        //根据商品ID拆线呢商品类目
+        TbItemCat tbItemCat = tbItemCatMapper.selectByPrimaryKey(tbItem.getCid());
+        map.put("itemCar",tbItemCat.getName());
+        //根据商品ID查询商品规格信息
+        TbItemParamItemExample example = new TbItemParamItemExample();
+        TbItemParamItemExample.Criteria criteria = example.createCriteria();
+        criteria.andItemIdEqualTo(itemId);
+        List<TbItemParamItem> list = itemParamItemMapper.selectByExampleWithBLOBs(example);
+        if (list.size()>0&&list!=null){
+            map.put("itemParamItem",list.get(0).getParamData());
+        }
+        return map;
     }
 }

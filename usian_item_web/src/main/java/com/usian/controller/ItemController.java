@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/backend")
@@ -31,7 +32,7 @@ public class ItemController {
     @RequestMapping("/itemCategory/selectItemCategoryByParentId")
     public Result selectItemCategoryByParentId(@RequestParam(defaultValue = "0")Long id){
         List<TbItemCat> list = itemServiceFeign.selectItemCategoryByParentId(id);
-        if(list.size()>0&& list!=null){
+        if(list.size() > 0 && list!=null){
             return Result.ok(list);
         }
         return Result.error("查询无结果");
@@ -44,5 +45,20 @@ public class ItemController {
             return Result.ok();
         }
         return Result.error("添加失败");
+    }
+
+    @RequestMapping("/item/preUpdateItem")
+    public Result preUpdateItem(Long itemId){
+        Map<String,Object> map = itemServiceFeign.preUpdateItem(itemId);
+        if (map.size()>0){
+            return Result.ok(map);
+        }
+        return Result.error("回显错误");
+    }
+
+    @RequestMapping("item/deleteItemById")
+    public Result deleteItemById(Long itemId){
+        /*itemServiceFeign.deleteItemById(itemId);*/
+        return Result.error("删除错误");
     }
 }

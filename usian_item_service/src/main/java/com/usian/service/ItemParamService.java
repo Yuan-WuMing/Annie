@@ -15,12 +15,14 @@ public class ItemParamService {
     private TbItemParamMapper mapper;
 
 
+
     public TbItemParam selectItemParamByItemCatId(Long itemCatId) {
         TbItemParamExample example = new TbItemParamExample();
         TbItemParamExample.Criteria criteria = example.createCriteria();
         criteria.andItemCatIdEqualTo(itemCatId);
+        criteria.andItemCatIdEqualTo(itemCatId);
         List<TbItemParam> list = mapper.selectByExampleWithBLOBs(example);
-        if (list.size()>0&&list!=null){
+        if (list.size()>0 && list!=null){
             return list.get(0);
         }
         return null;

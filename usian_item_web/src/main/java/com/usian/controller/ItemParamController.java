@@ -16,7 +16,7 @@ public class ItemParamController {
     private ItemServiceFeign itemServiceFeign;
 
     @RequestMapping("itemParam/selectItemParamByItemCatId/{itemCatId}")
-    public Result selectItemParamByItemCatId(@PathVariable Long itemCatId){
+    public Result selectItemParamByItemCatId(@PathVariable("itemCatId") Long itemCatId){
         TbItemParam tbItemParam = itemServiceFeign.selectItemParamByItemCatId(itemCatId);
         if (tbItemParam!=null){
             return Result.ok(tbItemParam);

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("service")
@@ -32,6 +33,11 @@ public class ItemController {
    @RequestMapping("item/insertTbItem")
    public Integer insertTbItem(@RequestBody TbItem tbItem,String desc,String itemParams){
       return itemService.insertTbItem(tbItem,desc,itemParams);
+   }
+
+   @RequestMapping("item/preUpdateItem")
+   public Map<String, Object> preUpdateItem(Long itemId){
+      return itemService.preUpdateItem(itemId);
    }
 
 
