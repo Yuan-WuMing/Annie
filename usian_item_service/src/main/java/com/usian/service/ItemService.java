@@ -85,7 +85,7 @@ public class ItemService {
 
         //补齐商品规格参数
         TbItemParamItem tbItemParamItem = new TbItemParamItem();
-        tbItemParamItem.setId(itemId);
+        tbItemParamItem.setItemId(itemId);
         tbItemParamItem.setParamData(itemParams);
         tbItemParamItem.setUpdated(date);
         tbItemParamItem.setCreated(date);
@@ -140,7 +140,10 @@ public class ItemService {
     }
 
     public Integer deleteItemById(Long itemId) {
-        int i1 = tbItemMapper.deleteByPrimaryKey(itemId);
+        TbItemExample tbItemExample = new TbItemExample();
+        TbItemExample.Criteria criteria = tbItemExample.createCriteria();
+        criteria.andIdEqualTo(itemId);
+        int i1 = tbItemMapper.deleteByExample(tbItemExample);
         int i2 = itemDescMapper.deleteByPrimaryKey(itemId);
         int i3 = itemParamItemMapper.deleteByPrimaryKey(itemId);
         return i1+i2+i3;

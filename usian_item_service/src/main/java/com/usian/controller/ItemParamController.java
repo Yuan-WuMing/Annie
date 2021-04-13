@@ -26,5 +26,15 @@ public class ItemParamController {
         return itemParamService.selectItemParamAll(page,rows);
     }
 
+    @RequestMapping("/itemParam/insertItemParam")
+    public Integer insertItemParam(@RequestParam Long itemCatId,@RequestParam  String paramData){
+        return itemParamService.insertItemParam(itemCatId,paramData);
+    }
+
+    @RequestMapping("/itemParam/deleteItemParamById")
+    public Integer deleteItemParamById(Long id){
+        return itemParamService.deleteItemParamById(id);
+    }
+
 
 }

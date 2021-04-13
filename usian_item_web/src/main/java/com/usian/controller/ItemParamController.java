@@ -32,7 +32,24 @@ public class ItemParamController {
         if (pageResult.getResult()!=null && pageResult.getResult().size()>0){
             return Result.ok(pageResult);
         }
-
         return Result.error("查询出错");
+    }
+
+    @RequestMapping("itemParam/insertItemParam")
+    public Result insertItemParam(Long itemCatId,String paramData){
+        Integer num = itemServiceFeign.insertItemParam(itemCatId,paramData);
+        if (num==1){
+            return Result.ok();
+        }
+        return Result.error("插入规格参数错误");
+    }
+
+    @RequestMapping("itemParam/deleteItemParamById")
+    public Result deleteItemParamById(Long id){
+        Integer i = itemServiceFeign.deleteItemParamById(id);
+        if (i==1){
+            return Result.ok();
+        }
+        return Result.error("删除失败");
     }
 }
