@@ -60,7 +60,7 @@ public class ItemController {
     @RequestMapping("item/deleteItemById")
     public Result deleteItemById(Long itemId){
         Integer count = itemServiceFeign.deleteItemById(itemId);
-        if (count==3){
+        if (count==1){
             return Result.ok("删除成功");
         }
         return Result.error("删除错误");

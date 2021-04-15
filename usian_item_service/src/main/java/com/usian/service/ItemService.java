@@ -100,7 +100,7 @@ public class ItemService {
         map.put("item",tbItem);
         //根据商品ID查询描述
         TbItemDesc tbItemDesc = itemDescMapper.selectByPrimaryKey(itemId);
-        map.put("itemDesc",tbItemDesc);
+        map.put("itemDesc",tbItemDesc.getItemDesc());
         //根据商品ID查询商品类目
         TbItemCat tbItemCat = tbItemCatMapper.selectByPrimaryKey(tbItem.getCid());
         map.put("itemCat",tbItemCat.getName());
@@ -140,12 +140,9 @@ public class ItemService {
     }
 
     public Integer deleteItemById(Long itemId) {
-        TbItemExample tbItemExample = new TbItemExample();
-        TbItemExample.Criteria criteria = tbItemExample.createCriteria();
-        criteria.andIdEqualTo(itemId);
-        int i1 = tbItemMapper.deleteByExample(tbItemExample);
-        int i2 = itemDescMapper.deleteByPrimaryKey(itemId);
-        int i3 = itemParamItemMapper.deleteByPrimaryKey(itemId);
-        return i1+i2+i3;
+        TbItem tbItem = tbItemMapper.selectByPrimaryKey(itemId);
+        tbItem.setStatus((byte) 0);
+        int i = tbItemMapper.updateByPrimaryKey(tbItem);
+        return i;
     }
 }
