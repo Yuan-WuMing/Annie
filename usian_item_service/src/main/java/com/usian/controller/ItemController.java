@@ -4,6 +4,7 @@ import com.usian.pojo.TbItem;
 import com.usian.pojo.TbItemCat;
 import com.usian.service.ItemService;
 import com.usian.utils.PageResult;
+import com.usian.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,4 +51,6 @@ public class ItemController {
       Integer count = itemService.deleteItemById(itemId);
       return count;
    }
+
+
 }
