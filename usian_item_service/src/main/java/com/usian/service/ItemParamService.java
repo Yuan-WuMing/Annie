@@ -8,10 +8,12 @@ import com.usian.pojo.TbItemCat;
 import com.usian.pojo.TbItemCatExample;
 import com.usian.pojo.TbItemParam;
 import com.usian.pojo.TbItemParamExample;
+import com.usian.redis.RedisClient;
 import com.usian.utils.CatNode;
 import com.usian.utils.CatResult;
 import com.usian.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +28,12 @@ public class ItemParamService {
 
     @Autowired
     private TbItemCatMapper itemCatMapper;
+
+    @Value("${PROTAL_CATRESULT_KEY}")
+    private String PROTAL_CATRESULT_KEY;
+
+    @Autowired
+    private RedisClient redisClient;
 
 
     public TbItemParam selectItemParamByItemCatId(Long itemCatId) {
@@ -79,8 +87,19 @@ public class ItemParamService {
     }
 
     public CatResult selectItemCategoryAll() {
+        //从redis中获取数据，如果获取不到数据从数据库查询
+        CatResult catResultRedis = (CatResult)redisClient.get(PROTAL_CATRESULT_KEY);
+        if (catResultRedis!=null){
+            System.out.println("我是redis");
+            return catResultRedis;
+        }
         CatResult catResult = new CatResult();
+
         catResult.setData(getCatList(0L));
+
+        //添加到缓存
+        redisClient.set(PROTAL_CATRESULT_KEY,catResult);
+        System.out.println("我是数据库");
         return catResult;
     }
 

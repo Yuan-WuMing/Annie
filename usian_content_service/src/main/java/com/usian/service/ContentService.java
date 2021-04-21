@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.usian.mapper.TbContentMapper;
 import com.usian.pojo.TbContent;
 import com.usian.pojo.TbContentExample;
+import com.usian.redis.RedisClient;
 import com.usian.utils.AdNode;
 import com.usian.utils.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 public class ContentService {
+
+    @Value("${PORTAL_AD_KEY}")
+    private String PORTAL_AD_KEY;
+
+    @Autowired
+    private RedisClient redisClient;
 
     @Autowired
     private TbContentMapper contentMapper;
@@ -50,6 +57,13 @@ public class ContentService {
     }
 
     public List<AdNode> selectFrontendContentByAD() {
+        //查询缓存
+        List<AdNode> adNodeListRedis = (List<AdNode>) redisClient.hget(PORTAL_AD_KEY, AD_CATEGORY_ID.toString());
+        if (adNodeListRedis!=null){
+            return adNodeListRedis;
+        }
+        //查询数据库
+        
         TbContentExample example = new TbContentExample();
         TbContentExample.Criteria criteria = example.createCriteria();
         criteria.andCategoryIdEqualTo(AD_CATEGORY_ID);
