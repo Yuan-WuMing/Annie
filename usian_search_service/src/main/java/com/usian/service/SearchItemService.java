@@ -9,6 +9,7 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.IndicesClient;
@@ -197,5 +198,17 @@ public class SearchItemService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public int insertDocument(String itemId) throws IOException {
+        // 1、根据商品id查询商品信息。
+        SearchItem searchItem = searchItemMapper.getItemById(Long.valueOf(itemId));
+
+        //2、添加商品到索引库
+        IndexRequest indexRequest = new IndexRequest(ES_INDEX_NAME, ES_TYPE_NAME);
+        indexRequest.source(JsonUtils.objectToJson(searchItem), XContentType.JSON);
+        IndexResponse indexResponse =
+                restHighLevelClient.index(indexRequest,RequestOptions.DEFAULT);
+        return indexResponse.getShardInfo().getFailed();
     }
 }

@@ -2,7 +2,6 @@ package com.usian.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.netflix.discovery.converters.Auto;
 import com.usian.mapper.TbItemCatMapper;
 import com.usian.mapper.TbItemDescMapper;
 import com.usian.mapper.TbItemMapper;
@@ -10,7 +9,7 @@ import com.usian.mapper.TbItemParamItemMapper;
 import com.usian.pojo.*;
 import com.usian.utils.IDUtils;
 import com.usian.utils.PageResult;
-import com.usian.utils.Result;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +31,9 @@ public class ItemService {
     private TbItemDescMapper itemDescMapper;
     @Autowired
     private TbItemParamItemMapper itemParamItemMapper;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     public PageResult selectTbItemAllByPage(Integer page,Integer rows){
         PageHelper.startPage(page,rows);
@@ -91,6 +93,9 @@ public class ItemService {
         tbItemParamItem.setUpdated(date);
         tbItemParamItem.setCreated(date);
         Integer itemParemItemNum = itemParamItemMapper.insertSelective(tbItemParamItem);
+
+        //添加商品发布消息到mq
+        amqpTemplate.convertAndSend("item_exchage","item.add", itemId);
         return itemParemItemNum+tbitemDescNum+tbItemNum;
     }
 

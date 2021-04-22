@@ -10,6 +10,11 @@ spring:
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
+  rabbitmq:
+    host: 192.168.2.101
+    username: admin
+    password: 1111
+    virtual-host: /usian
 server:
   port: 8095
 eureka:
