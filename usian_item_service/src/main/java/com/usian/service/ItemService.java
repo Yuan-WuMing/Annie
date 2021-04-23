@@ -153,4 +153,22 @@ public class ItemService {
     }
 
 
+    public TbItem selectItemInfo(Long itemId) {
+        return tbItemMapper.selectByPrimaryKey(itemId);
+    }
+
+    public TbItemDesc selectItemDescByItemId(Long itemId) {
+        return itemDescMapper.selectByPrimaryKey(itemId);
+    }
+
+    public TbItemParamItem selectTbItemParamItemByItemId(Long itemId) {
+        TbItemParamItemExample example = new TbItemParamItemExample();
+        TbItemParamItemExample.Criteria criteria = example.createCriteria();
+        criteria.andItemIdEqualTo(itemId);
+        List<TbItemParamItem> list = itemParamItemMapper.selectByExampleWithBLOBs(example);
+        if (list.size()>0 && list!=null){
+            return list.get(0);
+        }
+        return null;
+    }
 }

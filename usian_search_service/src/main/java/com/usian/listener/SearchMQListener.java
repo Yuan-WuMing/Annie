@@ -45,6 +45,8 @@ public class SearchMQListener {
             exchange = @Exchange(value = "item_exchage" , type = ExchangeTypes.TOPIC),
             key = "item.*"
     ))
+
+
     public void listen(String msg){
         System.out.println("接收到消息：" + msg);
         int result = 0;
